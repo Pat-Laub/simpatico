@@ -1,3 +1,14 @@
+# simpatico.py
+#
+# Version: 0.1
+# Authors: Sean Purdon
+#
+# Note: this is just a basis, feel free to
+# start over with much structured approach.
+# I personally think a C tokenizer will be 
+# needed for simple and reliable style 
+# marking instead of pure regex..
+
 import sys
 import os
 import re

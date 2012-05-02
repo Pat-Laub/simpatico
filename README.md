@@ -31,7 +31,7 @@ it generates a large number of style errors for validly
 styled C code.
 
 After the automarker is complete the course tutors must go
-through the generated errors extremely carefully so validate
+through the generated errors extremely carefully to validate
 the process. Very frequently the tutors make mistakes.
 
 -- Error Format -- 
