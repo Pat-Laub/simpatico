@@ -18,6 +18,9 @@ sswith = lambda x, y: x.strip().startswith(y)
 sewith = lambda x, y: x.strip().endswith(y)
 
 def check_all():
+    """Check all the .c and .h files in the current directory
+
+    """
     files = [x for x in os.listdir(os.getcwd())
              if x.endswith('.c') or x.endswith('.h')]
 
@@ -27,6 +30,9 @@ def check_all():
         print
 
 def check(filename):
+    """Check a file for errors.
+
+    """
     errors = []
 
     lines = get_lines(filename)
@@ -281,6 +287,9 @@ def line_is_function_or_prototype(line):
     return True
 
 def get_lines(filename):
+    """Get a list of lines out of the given filename
+
+    """
     return [x+'\n' for x in remove_comments_and_strings(filename).split('\n')]
 
 def remove_comments_and_strings(filename):

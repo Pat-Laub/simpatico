@@ -10,3 +10,4 @@ $ python -m unittest tests
 """
 
 from naming import *
+from indents import *
