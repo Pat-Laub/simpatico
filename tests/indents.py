@@ -16,3 +16,6 @@ class TestIndents(unittest.TestCase):
         lines = simpatico.get_lines('tests/files/indents.c')
         errors = simpatico.check_indents(lines)
         self.assertItemsEqual(errors, self.EXPECTED)
+
+if __name__ == "__main__":
+    unittest.main()

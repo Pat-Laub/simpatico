@@ -12,3 +12,4 @@ $ python -m unittest tests
 from naming import *
 from indents import *
 from length import *
+from braces import *

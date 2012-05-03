@@ -49,3 +49,6 @@ class TestFunctionNames(unittest.TestCase):
         lines = simpatico.get_lines('tests/files/bad_naming.c')
         errors = simpatico.check_function_lengths_names(lines)
         self.assertItemsEqual(errors, expected)
+
+if __name__ == "__main__":
+    unittest.main()
