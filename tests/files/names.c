@@ -1,4 +1,4 @@
-#define ONE 1
+#define NUMBER_ONE 1
 #define two 2
 #define Three 3
 
@@ -11,18 +11,24 @@ typedef struct {
 } lowercase;
 
 int main() {
-    int number;
     int four = 4;
     char letter;
-    pid_t processIdNumber;
     bool trueOrFalse;
 
-    int Invalid;
+    int Array[5];
+    int Five, Six = 6, *Seven;
     bool AlsoInvalid = false;
-    char** UPPERCASE;
+    pid_t** UPPERCASE;
     char *String;
     unsigned long  BigNumber=1<<42;
+
+    void* (*Function)(void*);
 
     Point point1;
     Point Point2;
 }
+
+// int NotAVar;
+/*
+int NotAVar;
+*/
