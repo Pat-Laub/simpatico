@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # simpatico.py
 #
 # Version: 0.1
@@ -28,7 +29,7 @@ def check_all():
 def check(filename):
     errors = []
 
-    lines = [x+'\n' for x in remove_comments_and_strings(filename).split('\n')]
+    lines = get_lines(filename)
     errors.extend(check_indents(lines))
     errors.extend(check_function_lengths_names(lines))
     errors.extend(check_line_lengths(lines))
@@ -127,7 +128,7 @@ def check_naming(lines):
             if t[0].islower():
                 errors.append((n+1, 'Type Naming Error (%s)'%t))
     
-    matchStr = r'(unsigned )?(%s) /*?(?P<var>[^ ;)(]*)'%'|'.join(validTypes)
+    matchStr = r'(unsigned )?(%s)\**\s+\**(?P<var>[_a-zA-Z][_a-zA-Z0-9]*)'%'|'.join(validTypes)
 
     for n, line in enumerate(lines):
         if sswith(line, '*') or sswith(line, '/*'):
@@ -278,6 +279,9 @@ def line_is_function_or_prototype(line):
     if 'typedef' in line or 'struct' in line or 'union' in line:
         return False
     return True
+
+def get_lines(filename):
+    return [x+'\n' for x in remove_comments_and_strings(filename).split('\n')]
 
 def remove_comments_and_strings(filename):
     f = open(filename, 'U')
