@@ -108,6 +108,8 @@ def check_char_spacing(line, c, before=False):
     lst = line.split(c)
 
     for i, s in enumerate(lst):
+        if not s:
+            continue
         if (i and s[0] not in ' \n') or (before and i != len(lst)-1 and s[-1] != ' '):
             return False
     return True
