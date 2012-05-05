@@ -1,1 +1,7 @@
 *.pyc
+*.o
+Makefile
+tokenizer/src/Make.common
+tokenizer/src/structures/lexer/liblexer.a
+tokenizer/vera++
+
