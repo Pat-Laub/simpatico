@@ -3,6 +3,7 @@
 #
 # Version: 0.1
 # Authors: Sean Purdon
+#          Jackson Gatenby
 #
 # Note: this is just a basis, feel free to
 # start over with much structured approach.
@@ -13,6 +14,8 @@
 import sys
 import os
 import re
+
+import tokenizer
 
 sswith = lambda x, y: x.strip().startswith(y)
 sewith = lambda x, y: x.strip().endswith(y)
@@ -29,23 +32,73 @@ def check_all():
         check(f)
         print
 
+NAMING = "Naming"
+BRACES = "Braces"
+INDENTATION = "Indentation"
+WHITESPACE = "Whitespace"
+COMMENTS = "Comments"
+OVERALL = "Overall"
+LINELENGTH = "Line length"
+
+TYPES = {'int', 'char', 'size_t', 'pid_t', 'bool', 'long', 'short',
+         'float', 'double', 'long double', 'FILE', 'void'}
+
+class StyleChecker(object):
+    def __init__(self, filename):
+        self.filename = filename
+        with open(filename, 'r') as f:
+            self.lines = [line.rstrip('\n') for line in f.readlines()]
+        self.tokens = tokenizer.tokenize(filename)
+
+        self.errors = []
+        self.types = set(TYPES)
+
+    def check(self):
+        self.check_line_lengths()
+        for self.pos, _ in enumerate(self.tokens):
+            self.check_names()
+
+    def _error(self, linenum, type, message):
+        self.errors.append((linenum, type, message))
+
+    def check_line_lengths(self):
+        """Check the line lengths of the *whole file*"""
+        for lnum, line in enumerate(self.lines, 1):
+            if len(line) > 79:
+               self._error(lnum, LINELENGTH, "{} characters".format(len(line)))
+
+    def check_names(self):
+        """Check if the next token is a definition with an invalid name
+        
+        Known issues:
+        * Will not differentiate between variable and function definitions.
+        * Will not check typedefs, structs, #defines, etc.
+
+        """
+        p = self.pos
+        token = self.tokens[p]
+        if token.type == 'identifier':
+            # Is this the definition of this name?
+            if p >= 2 and self.tokens[p-1].type == 'space' and \
+                    self.tokens[p-2].type in self.types:
+                # Is it an invalid name?
+                # Check: is the first letter lowercase?
+                if not token.value[0].islower():
+                    self._error(token.linenum, NAMING, "({})".format(token.value))
+
+    def report(self):
+        errors = sorted(self.errors)
+        for linenum, type, message in errors:
+            print "{:>4}: {}: {}".format(linenum, type, message)
+
+
 def check(filename):
     """Check a file for errors.
 
     """
-    errors = []
-
-    lines = get_lines(filename)
-    errors.extend(check_indents(lines))
-    errors.extend(check_function_lengths_names(lines))
-    errors.extend(check_line_lengths(lines))
-    errors.extend(check_naming(lines))
-    errors.extend(check_horiz_whitespace(lines))
-    errors.extend(check_braces(lines))
-
-    errors.sort()
-    for n, err in errors:
-        print '%4s: %s'%(n, err)
+    checker = StyleChecker(filename)
+    checker.check()
+    checker.report()
 
 def check_braces(lines):
     errors = []
@@ -116,9 +169,6 @@ def check_char_spacing(line, c, before=False):
 
 def check_naming(lines):
     errors = []
-
-    validTypes = ['int', 'char', 'size_t', 'pid_t', 'bool', 'long', 'short',
-                  'float', 'double', 'long double', 'FILE']
 
     seenTypedef = False
     inTypedef = False

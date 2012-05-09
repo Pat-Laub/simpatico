@@ -1,5 +1,8 @@
 import subprocess
 import re
+from collections import namedtuple
+
+Token = namedtuple("Token", ["linenum", "col", "type", "value"])
 
 def tokenize(filename):
     """Read and tokenise a C file, and return a list of tokens.
@@ -14,7 +17,7 @@ def tokenize(filename):
     tokens = re.findall("(?m)^(\d+)/(\d+)\\t(\w+)\\t(.+|\n)$", tokenstring)
 
     # Convert line and column numbers to ints
-    tokens = [(int(a), int(b), c, d) for a, b, c, d in tokens]
+    tokens = [Token(int(a), int(b), c, d) for a, b, c, d in tokens]
     return tokens
 
 if __name__ == "__main__":
