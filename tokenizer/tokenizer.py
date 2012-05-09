@@ -23,6 +23,8 @@ def tokenize(filename):
 if __name__ == "__main__":
     # sample usage
     import sys, pprint
+    formatstr = "{0.linenum}, {0.col}:\t{0.type:<10} {0.value!r}"
     for filename in sys.argv[1:]:
-        pprint.pprint(tokenize(filename))
+        for token in tokenize(filename):
+            print formatstr.format(token)
 

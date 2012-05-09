@@ -40,6 +40,8 @@ COMMENTS = "Comments"
 OVERALL = "Overall"
 LINELENGTH = "Line length"
 
+INDENT = 4
+
 TYPES = {'int', 'char', 'size_t', 'pid_t', 'bool', 'long', 'short',
          'float', 'double', 'long double', 'FILE', 'void'}
 
@@ -54,9 +56,13 @@ class StyleChecker(object):
         self.types = set(TYPES)
 
     def check(self):
+        # keep track of information about expected level of indents
+        self.indent = 0
+
         self.check_line_lengths()
-        for self.pos, _ in enumerate(self.tokens):
+        for self.pos in xrange(len(self.tokens)):
             self.check_names()
+            self.check_indent()
 
     def _error(self, linenum, type, message):
         self.errors.append((linenum, type, message))
@@ -70,21 +76,58 @@ class StyleChecker(object):
     def check_names(self):
         """Check if the next token is a definition with an invalid name
         
-        Known issues:
+        Known/suspected issues:
         * Will not differentiate between variable and function definitions.
         * Will not check typedefs, structs, #defines, etc.
 
         """
-        p = self.pos
-        token = self.tokens[p]
+        token = self.tokens[self.pos]
         if token.type == 'identifier':
             # Is this the definition of this name?
-            if p >= 2 and self.tokens[p-1].type == 'space' and \
-                    self.tokens[p-2].type in self.types:
+            if self.pos >= 2 and self.tokens[self.pos-1].type == 'space' and \
+                    self.tokens[self.pos-2].type in self.types:
                 # Is it an invalid name?
                 # Check: is the first letter lowercase?
                 if not token.value[0].islower():
                     self._error(token.linenum, NAMING, "({})".format(token.value))
+
+    def check_indent(self):
+        """Check if the next token is an incorrect indentation.
+
+        Also, if the current token requires that future indents be at a different
+        level, then make note of that.
+
+        Known/suspected issues:
+        * Cannot account for two dedents at the end of a switch statement.
+        * Cannot account for double indent of multi-line statements.
+        * Might break if braces are wrong in some instances. e.g. this would be picked up as correct indentation:
+
+        if (1 == 1) {
+        return; }
+
+        """
+        token = self.tokens[self.pos]
+        # Does this token require different indentation on the next line?
+        nextline = [t.type for t in self.tokens if t.linenum == token.linenum + 1]
+        if token.type in ('leftbrace', 'case', 'switch'):
+            self.indent += 1
+        elif token.type == 'newline' and ('rightbrace' in nextline or 'case' in nextline):
+            self.indent -= 1
+
+        if token.type == 'newline':
+            # check the next line is blank or has correct indentation
+            nexttok = self.tokens[self.pos + 1]
+            if (self.indent > 0 and
+                    nexttok.type not in ('newline', 'eof') and
+                    (nexttok.type != 'space' or len(nexttok.value) != INDENT * self.indent)):
+                # There is an error on the next line
+                msg = "Expected {} got {}".format(INDENT * self.indent, len(nexttok.value))
+                self._error(token.linenum + 1, INDENTATION, msg)
+            elif self.indent == 0 and nexttok.type == 'space':
+                # There is an error on the next line
+                msg = "Expected {} got {}".format(INDENT * self.indent, len(nexttok.value))
+                self._error(token.linenum + 1, INDENTATION, msg)
+
 
     def report(self):
         errors = sorted(self.errors)
