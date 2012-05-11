@@ -179,6 +179,7 @@ def check_line_lengths(lines):
     errors = []
 
     for n, line in enumerate(lines):
+        line = line.rstrip('\n')
         if len(line) > 79:
             errors.append((n+1, 'Line Length Error (%s characters)'%len(line)))
 
