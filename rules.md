@@ -112,21 +112,21 @@ Example:
   Rule 5.2 makes sure that the `case` and `default` statements are always one indent
   behind the body above, and 3.1 makes sure that the body below is one indent ahead:
 
-      switch(x) {
-          case 1:
-              ...
-          case 2:   // Rule 5.2: -1 indents on this line; Rule 3.1: +1 indents after this.
-              ...
-      }             // Rule 6.2: -2 indents on this line.
+        switch(x) {
+            case 1:
+                ...
+            case 2:   // Rule 5.2: -1 indents on this line; Rule 3.1: +1 indents after this.
+                ...
+        }             // Rule 6.2: -2 indents on this line.
 
 * Multiple rules can be applied in the same line. For instance, at the end of
   a control statement which spans multiple lines, rules 6.1 and 3 both apply,
   giving a net loss of one indentation level:
 
-      if (a && b && ...
-              && x && y && z) {
-          ...
-      }
+        if (a && b && ...
+                && x && y && z) {
+            ...
+        }
 
 * Rule 5.3, and the wording of 3.1 (emphasis on the control structure, not the
   open brace), is necessary to avoid applying double penalties for misuse of braces.
