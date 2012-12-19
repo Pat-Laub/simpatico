@@ -4,6 +4,34 @@ This is an unofficial, extensive list of style rules implemented
 (or, to implement).
 For the full set of official rules, consult the style guide itself.
 
+## Naming
+
+1. Variable names start with a lowercase letter, do not contain underscores.
+2. File names start with a lowercase letter, do not contain underscores.
+3. #defined constants don't contain lowercase letters, except `true` and `false`.
+4. Function names don't contain uppercase letters.
+5. Type/struct/union names start with an uppercase letter, do not contain underscores.
+
+### Examples
+
+Example code:
+
+    #define DEFAULT_SPEED 10
+
+    int book, newCount, setWordLength;
+
+    int main();
+    void reset_secret_string();
+
+    typedef int Number;
+    struct Point { int x; int y; }
+
+Example filenames: `hello.c`, `stringRoutines.c`
+
+## Comments
+
+No comment rules are implemented in simpatico.
+
 ## Braces
 
 1. Use braces around the body of control statements (except `case` and `default`
@@ -158,13 +186,14 @@ Example:
 This section lists style points which are impractical for simpatico to check,
 and so must be checked by hand.
 
-1. Comments
-2. Vertical Whitespace
-2. Readability
-3. Modularity
-4. Code repetition
-5. Compiler warnings and errors
-6. Code with syntax errors (which could confuse the tokeniser and give incorrect
+1. Names are appropriate, source files end with .c
+2. Comments
+3. Vertical Whitespace
+4. Readability
+5. Modularity
+6. Code repetition
+7. Compiler warnings and errors
+8. Code with syntax errors (which could confuse the tokeniser and give incorrect
    output)
 
 
