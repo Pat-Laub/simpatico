@@ -1,5 +1,8 @@
 
-__all__ = ['get_checkers']
+from collections import namedtuple
+
+Violation = namedtuple("Violation",
+        ["filename", "line", "category", "description"])
 
 class RuleChecker(object):
     """An abstract class for checking and reporting on rules."""
@@ -8,9 +11,11 @@ class RuleChecker(object):
     def __init__(self):
         self._errors = []
 
-    def _error(self, linenum, message):
+    def _error(self, file_line, message):
         """Report an error on the given line number (counting lines from 1)"""
-        self._errors.append((linenum, self._CATEGORY, message))
+        fname, lnum = file_line
+        v = Violation(fname, lnum, self._CATEGORY, message)
+        self._errors.append(v)
 
     def check(self, reader):
         raise NotImplementedError
@@ -46,7 +51,7 @@ class NamesChecker(RuleChecker):
                 continue
             
             if not self._check_variable(token.value):
-                self._error(reader.linenum(), "Invalid variable " + token.value)
+                self._error(reader.file_line(), "Invalid variable " + token.value)
 
 class BracesChecker(RuleChecker):
     _CATEGORY = "Braces"
@@ -83,7 +88,7 @@ class WhitespaceChecker(RuleChecker):
                 message = "No space after {0}".format(token.value)
 
             if not correct:
-                self._error(reader.linenum(), message)
+                self._error(reader.file_line(), message)
 
 class LineLengthChecker(RuleChecker):
     """Checker for line length rules."""
@@ -94,7 +99,7 @@ class LineLengthChecker(RuleChecker):
         while not reader.end_lines():
             line = reader.next_line().rstrip('\n')
             if len(line) > 79:
-                self._error(reader.linenum(),
+                self._error(reader.file_line(),
                         "Line is {0} characters".format(len(line)))
 
 class OverallChecker(RuleChecker):
@@ -105,7 +110,7 @@ class OverallChecker(RuleChecker):
         while not reader.end():
             token = reader.next_tok()
             if token.type == 'goto':
-                self._error(reader.linenum(), 'goto')
+                self._error(reader.file_line(), 'goto')
 
 _CHECKERS = [NamesChecker, #BracesChecker, IndentationChecker,
         WhitespaceChecker, LineLengthChecker, OverallChecker]

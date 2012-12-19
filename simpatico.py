@@ -6,22 +6,26 @@ import rules
 PRINT_FORMAT = "{fname}:{line}: [{category}] {desc}"
 
 def report(errors):
-    for fname in errors:
-        errors[fname].sort()
-        for e in errors[fname]:
-            print PRINT_FORMAT.format(fname=fname, line=e[0],
-                    category=e[1].upper(), desc=e[2])
+    for e in errors:
+        print PRINT_FORMAT.format(fname=e.filename, line=e.line,
+                category=e.category.upper(), desc=e.description)
+
+    print
+    print "Total number of violations:", len(errors)
 
 def main(args):
     checkers = rules.get_checkers()
-    errors = {}
+    errors = []
     for fname in args.files:
         reader = file_reader.FileReader(fname)
-        errors[fname] = []
         for c in checkers:
             reader.reset()
             c.check(reader)
-            errors[fname].extend(c.report())
+
+    for c in checkers:
+        errors.extend(c.report())
+
+    errors.sort()
     report(errors)
 
 if __name__ == '__main__':

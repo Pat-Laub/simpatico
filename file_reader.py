@@ -5,6 +5,7 @@ __all__ = ['FileReader']
 class FileReader(object):
     """Keeps track of the tokens and lines in the file."""
     def __init__(self, filename):
+        self._filename = filename
         with open(filename, 'rU') as f:
             self._lines = f.readlines()
         self._tokens = tokenizer.tokenize(filename)
@@ -41,11 +42,9 @@ class FileReader(object):
 
         return tok
 
-    def linenum(self):
-        """Return the line number of the current line, counting from 1"""
-        # + 1 since line numbers internally count from 0
-        ##return self._linenum + 1
-        return self._tokens[self._pos].linenum
+    def file_line(self):
+        """Return the filename and  line number of the current line"""
+        return self._filename, self._tokens[self._pos].linenum
 
     def end(self):
         """Have we reached the end of the tokens?"""
