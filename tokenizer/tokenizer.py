@@ -13,7 +13,8 @@ def tokenize(filename):
 
     """
     # Run vera++, and pass the output through re.findall
-    tokenstring = subprocess.check_output(['tokenizer/vera++', '-rule', 'DUMP', filename])
+    tokenstring = subprocess.check_output(['tokenizer/vera++', '-rule', 'DUMP',
+            filename])
     tokens = re.findall("(?m)^(\d+)/(\d+)\\t(\w+)\\t(.+|\n)$", tokenstring)
 
     # Convert line and column numbers to ints

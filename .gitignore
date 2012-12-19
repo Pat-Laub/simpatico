@@ -1,7 +1,7 @@
 *.pyc
 *.o
+*.swp
 Makefile
 tokenizer/src/Make.common
 tokenizer/src/structures/lexer/liblexer.a
 tokenizer/vera++
-
