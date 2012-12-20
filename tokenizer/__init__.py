@@ -2,4 +2,4 @@
 
 """
 
-from tokenizer import tokenize
+from reader import *

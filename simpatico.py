@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import file_reader
+import tokenizer
 import rules
 
 PRINT_FORMAT = "{fname}:{line}: [{category}] {desc}"
@@ -17,7 +17,7 @@ def main(args):
     checkers = rules.get_checkers()
     errors = []
     for fname in args.files:
-        reader = file_reader.FileReader(fname)
+        reader = tokenizer.TokenReader(fname)
         for c in checkers:
             reader.reset()
             c.check(reader)

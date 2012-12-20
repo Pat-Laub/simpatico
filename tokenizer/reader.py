@@ -1,14 +1,14 @@
-import tokenizer
+import tokens
 
-__all__ = ['FileReader']
+__all__ = ['TokenReader']
 
-class FileReader(object):
+class TokenReader(object):
     """Keeps track of the tokens and lines in the file."""
     def __init__(self, filename):
         self._filename = filename
         with open(filename, 'rU') as f:
             self._lines = f.readlines()
-        self._tokens = tokenizer.tokenize(filename)
+        self._tokens = tokens.tokenize(filename)
         self._len_tokens = len(self._tokens)
         self._len_lines = len(self._lines)
         # internally index tokens and lines from 0

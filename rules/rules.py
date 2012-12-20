@@ -1,27 +1,7 @@
+from base import RuleChecker
 
-from collections import namedtuple
-
-Violation = namedtuple("Violation",
-        ["filename", "line", "category", "description"])
-
-class RuleChecker(object):
-    """An abstract class for checking and reporting on rules."""
-    _CATEGORY = NotImplemented
-
-    def __init__(self):
-        self._errors = []
-
-    def _error(self, file_line, message):
-        """Report an error on the given line number (counting lines from 1)"""
-        fname, lnum = file_line
-        v = Violation(fname, lnum, self._CATEGORY, message)
-        self._errors.append(v)
-
-    def check(self, reader):
-        raise NotImplementedError
-
-    def report(self):
-        return sorted(self._errors)
+__all__ = ['NamesChecker', 'BracesChecker', 'IndentationChecker',
+        'WhitespaceChecker', 'LineLengthChecker', 'OverallChecker']
 
 class NamesChecker(RuleChecker):
     """Checker for naming conventions."""
@@ -112,8 +92,3 @@ class OverallChecker(RuleChecker):
             if token.type == 'goto':
                 self._error(reader.file_line(), 'goto')
 
-_CHECKERS = [NamesChecker, #BracesChecker, IndentationChecker,
-        WhitespaceChecker, LineLengthChecker, OverallChecker]
-
-def get_checkers():
-    return [c() for c in _CHECKERS]
