@@ -6,6 +6,7 @@ import rules
 PRINT_FORMAT = "{fname}:{line}: [{category}] {desc}"
 
 def report(errors):
+    """Print a report of a given set of errors."""
     for e in errors:
         print PRINT_FORMAT.format(fname=e.filename, line=e.line,
                 category=e.category.upper(), desc=e.description)
@@ -13,15 +14,19 @@ def report(errors):
     print
     print "Total number of violations:", len(errors)
 
+def check(filename, checkers):
+    """Evaluate the style of a given filename according to given rules."""
+    reader = tokenizer.TokenReader(filename)
+    for c in checkers:
+        reader.reset()
+        c.check(reader)
+
 def main(args):
     checkers = rules.get_checkers()
-    errors = []
     for fname in args.files:
-        reader = tokenizer.TokenReader(fname)
-        for c in checkers:
-            reader.reset()
-            c.check(reader)
+        check(fname, checkers)
 
+    errors = []
     for c in checkers:
         errors.extend(c.report())
 

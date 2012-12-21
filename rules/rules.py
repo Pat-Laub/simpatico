@@ -35,11 +35,48 @@ class NamesChecker(RuleChecker):
 
 class BracesChecker(RuleChecker):
     _CATEGORY = "Braces"
-    # TODO
+
+    def check(self, reader):
+        # TODO (braces checking):
+        # braces around control statements (except case/default)
+        # { on same line as control statement followed by newline
+        # } at the start of a new line (including for function definitions)
+        # else / else if / do-while have stuff after the }
+        # { ... } on the same line counts as one violation, not 2
+        # mistakes in } else { and } else if { count as one violation, not 2
+        
+        # keep track of:
+        # - whether we are in a control statement (to look for the { in the right spot)
+        # - control structure, array, struct, etc nesting (as a stack)
+        # - violations that shouldn't be double-counted
+        pass
 
 class IndentationChecker(RuleChecker):
     _CATEGORY = "Indentation"
-    # TODO
+    _INDENT = 4
+
+    def check(self, reader):
+        # TODO: (indentation checking)
+        # start of body after control structure: +1 indent
+        # { after function definition: +1 indent
+        # newline in a statement: +2 indent on first encounter
+        # end of code block: -1 indent
+        #   -> } when code block started with {
+        #   -> end of statement when code block didn't start with {
+        #   -> `case` or `default` when code block is a case/default
+        #   -> end of switch within case/default: apply twice (-2)
+        # multi-line statement finishes: -2 indent
+
+        # Keep track of:
+        # - control structure nesting (as a stack)
+        # - whether we are in a control statement (to look for the \n at the end)
+        # - whether we are in a statement (so we can detect \n in a statement)
+        # - whether we are in a multi-line statement (so we only count it once)
+
+        # a non-control statement ends with a ;
+        # the end of a control statement depends on the statement.
+        pass
+
 
 class WhitespaceChecker(RuleChecker):
     """Checker for horizontal and vertical whitespace rules."""
@@ -53,7 +90,7 @@ class WhitespaceChecker(RuleChecker):
                 "plusassign", "minusassign", "starassign", "divideassign",
                 "percentassign", "shiftleftassign", "shiftrightassign"}
         commas = {"comma", "semicolon"}
-        whitespace = {"space", "newline"}
+        whitespace = {"space", "newline", "eof"}
 
         while not reader.end():
             token = reader.next_tok()

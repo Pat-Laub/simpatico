@@ -223,3 +223,5 @@ and so must be checked by hand.
   * `union`
   * function definitions.
   * more?
+* What's the style supposed to be if a code block in `{ }` is not a body of a
+  control structure? Indent the code block?

@@ -4,7 +4,7 @@ from rules import *
 
 __all__ = ['get_checkers']
 
-_CHECKERS = [NamesChecker, #BracesChecker, IndentationChecker,
+_CHECKERS = [NamesChecker, BracesChecker, IndentationChecker,
         WhitespaceChecker, LineLengthChecker, OverallChecker]
 
 def get_checkers():
