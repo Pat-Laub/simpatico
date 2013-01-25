@@ -1,22 +1,16 @@
 /* Contains bad brace violations of different types, including mixes of
 ** good and bad. Currently contains
-** 17
+** 18 (or 20?)
 ** violations.
 */
 
-/* 1 violation */
-void badfuncA(void)
-{
-    return;
-}
-
-/* 1 violation */
-void badfuncB(void) { return; }
+/* 1 violation (or 2?) (open brace not at end of line, close not at start of a line) */
+void badfunc(void) { return; }
 
 /* 3 violations */
 int fa(int a) {
     if (a)
-    { //violation
+    { //violation (open brace not on same line)
         a++;
     } //violation (the whole line of } else if {)
     else if (a+1)
@@ -30,7 +24,7 @@ int fa(int a) {
     return fb(a);
 }
 
-/* 3 violations */
+/* 4 violations */
 int fb(int a) {
     if (a) 
     { //violation
@@ -40,8 +34,7 @@ int fb(int a) {
         a--;
     } else
     { //violation
-        return 0;
-    }
+        return 0; } // violation (close brace not at start of line)
     return a;
 }
 
@@ -56,25 +49,25 @@ void missing_braces(void) {
         return 2;
 }
 
-/* 3 violations */
+/* 4 (or 5?) violations */
 void bad_loops(void) {
     for (int i = 0; i < 10; i++) 
     { //violation
         a = i;
     }
-    for (;;) { break; } //violation
-    while (!a)  
+    for (;;) { break; } //violation (or 2?)
+    do
     { //violation
         a++;
     }
+    while (!a); // violation (not on same line as })
 }
 
 
 /* 3 violations */
 int main () {
     int a;
-    switch (a)
-    { //violation
+    switch (a){ //violation (no space before open brace)
     case 0:
         return 0;
     default:

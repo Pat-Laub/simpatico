@@ -1,7 +1,8 @@
 /* Contains naming violations of different types. Currently contains
-** 7
+** 8
 ** violations.
 */
+#define Pi 3.1416   /* violation */
 
 typedef struct bobStruct { /* violation */
     int thing;
@@ -9,7 +10,7 @@ typedef struct bobStruct { /* violation */
 
 typedef struct Thing {
     int thing;
-} badStruct; /* violation */
+} Bad_Struct; /* violation */
 
 int A; /* violation */
 char a_char; /* violation */

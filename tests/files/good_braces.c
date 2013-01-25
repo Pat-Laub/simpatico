@@ -1,5 +1,6 @@
 /* Contains no brace violations of any type.*/
 
+/* array initialisations have no brace rules. */
 int array[] = {1, 2, 3, 4};
 int another[] = {
     1,
@@ -12,7 +13,14 @@ int yetAnother[] = {1, 2, 3,
 int anotherStill[] = {1, 2, 3, \
         4};
 
-void if_continutation(void) {
+/* structure declarations have no brace rules. */
+typedef struct Foo
+{ int x; } Foo;
+
+/* The opening brace for a function definition may be in the left most column
+   of the next line. */
+void if_continutation(void)
+{
     if (1 && 2 &&
             3 && 4) {
         return;
@@ -52,9 +60,9 @@ int main () {
     for (int i = 0; i < 10; i++) {
         a = i;
     }
-    while (!a)  {
+    do  {
         a++;
-    }
+    } while (!a);
     if (fa(a)) {
         a = 1;
     } else if (fb(b)) {

@@ -37,7 +37,7 @@ No comment rules are implemented in simpatico.
 1. Use braces around the body of control statements (except `case` and `default`
    within a switch statement).
 2. The open brace should be on the same line as the control statement with at
-   least one space before.
+   least one space before, at the end of its line.
 3. The close brace should be at the start of a line.
 4. `else` and `else if` clauses, and the `while` part of a `do`-`while` loop,
    should be on the same line as the close brace before it.
