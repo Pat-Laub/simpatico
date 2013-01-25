@@ -3,13 +3,13 @@ simpatico
 
 A C source code style checker..
 
--- What is it? -- 
+## What is it?
 
 This style marker should enforce the rules outlayed in
 the 'csse2310-style-guide.pdf' which was created for the computer
 science course 'CSSE2310' at the University of Queensland.
 
--- Motivation --
+## Motivation
 
 If/when this project becomes more reliable than the previous
 implementations of the automarker then the tutors of this 
@@ -19,7 +19,7 @@ Also, many hours of marking time is quite expensive for such
 a menial task, and this project could save money as well 
 as time and effort.
 
--- Current method --
+## Current method
 
 Currently a C++ program called 'vera++' tokenises the C
 source code input and feeds it to a very large tcl script
@@ -34,42 +34,48 @@ After the automarker is complete the course tutors must go
 through the generated errors extremely carefully to validate
 the process. Very frequently the tutors make mistakes.
 
--- Error Format -- 
+## Error Format
 
 Each style error must be declared in the format:
     filename:lineNumber: [CATEGORY] Description
 
-The categories are roughly described below:
+The categories are roughly described below. More details are given in
+`rules.md` and in `csse2310-style-guide.pdf`.
 
-[NAMING]
+### NAMING
 - variables
 - defines
 - functions
 - typedefs
 
-[BRACES]
+### BRACES
 - space before brace
 - correct placement
 - correct alignment
 
-[INDENTATION]
+### INDENTATION
 - multiples of four spaces
 - nesting correctly indented
 - line continuation
 
-[WHITESPACE]
+### WHITESPACE
 - grammatical spacing around assignment operators
 - correctly spaced vertically
 
-[COMMENTS]
+### COMMENTS
 - globals
 - functions (parameters esp.)
 - lengthy or tricky code
 
-[OVERALL]
+### OVERALL
 - no function over 50 lines
 - modularity / no excessive duplication of code
 
-[LINE-LENGTH]
+### LINE-LENGTH
 - all lines must be shorter than 80 chars long (including \r)
 
+## Usage
+
+```
+./simpatico.py file1.c file2.c
+```
