@@ -1,3 +1,6 @@
+# DEPRECATED
+### Go to [Simon's fork](https://github.com/SJShaw/simpatico) for a totally revamped version of this project.
+
 simpatico
 =========
 
